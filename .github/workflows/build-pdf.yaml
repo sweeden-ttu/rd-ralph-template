@@ -84,6 +84,14 @@ jobs:
           echo -e "$CHANGES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install pygments
+        run: pip install pygments
+
       - name: Set up LaTeX environment
         uses: xu-cheng/latex-action@v3
         with:
@@ -91,7 +99,6 @@ jobs:
           working_directory: src
           args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
           extra_system_packages: |
-            python3-pygments
             librsvg2-bin
             ghostscript
           pre_compile: |
