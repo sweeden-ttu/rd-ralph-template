@@ -98,9 +98,7 @@ jobs:
           root_file: main.tex
           working_directory: src
           args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode
-          extra_system_packages: |
-            librsvg2-bin
-            ghostscript
+          latexmk_use_lualatex: false
           pre_compile: |
             echo "Installing essential LaTeX packages..."
             tlmgr update --self
