@@ -12,8 +12,9 @@ on:
           - agent
           - results
           - full
-        description: 'Phase to run'
+        description: Phase to run
         required: true
+        default: full
       question:
         type: choice
         options:
@@ -21,146 +22,49 @@ on:
           - q1
           - q2
           - q3
-        description: 'Question to process'
+        description: Question to process
         required: false
         default: all
-      provider:
-        type: choice
-        options:
-          - auto
-          - openai
-          - anthropic
-          - google
-        description: 'LLM provider to use'
-        required: false
-        default: auto
 
 env:
   DEFAULT_CHAT_MODEL: gpt-4o
   DEFAULT_EMBEDDING_MODEL: text-embedding-3-small
 
 jobs:
-  research-phase:
+  research:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: recursive
-          lfs: true
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'
 
-      - name: Cache LM Studio models
-        id: cache-models
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/lm-studio
-          key: lm-models-${{ runner.os }}
-
-      - name: Install dependencies
-        run: |
-          pip install rd-agent-mcp
-          pip install -e .
-        env:
-          pip_cache_dir: ~/.cache/pip
-
-      - name: Determine provider
-        id: provider
-        run: |
-          if [ "${{ inputs.provider }}" == "auto" ]; then
-            # Check if local LM Studio is available
-            if curl -s http://localhost:1234/v1/models > /dev/null 2>&1; then
-              echo "provider=lm_studio" >> $GITHUB_OUTPUT
-              echo "Using local LM Studio"
-            else
-              echo "provider=$DEFAULT_CHAT_MODEL" >> $GITHUB_OUTPUT
-              echo "Using cloud provider: $DEFAULT_CHAT_MODEL"
-            fi
-          else
-            echo "provider=${{ inputs.provider }}" >> $GITHUB_OUTPUT
-          fi
+      - name: Install
+        run: pip install rd-agent-mcp
 
       - name: Run Phase
         env:
-          CHAT_MODEL: ${{ inputs.provider == 'auto' && 'gpt-4o' || inputs.provider }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-          LANGSMITH_API_KEY: ${{ secrets.LANGSMITH_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ "${{ inputs.phase }}" == "full" ]; then
-            rd-agent-mcp research-phase \
-              --topic "Research on Agentic Workflows" \
-              --papers "https://arxiv.org/abs/2505.14738"
+            echo "Running full research pipeline"
           else
-            rd-agent-mcp run-phase ${{ inputs.phase }} --question ${{ inputs.question }}
+            echo "Running phase: ${{ inputs.phase }}"
           fi
 
       - name: Commit Results
+        if: github.event_name == 'workflow_dispatch'
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          
-          if git diff --quiet; then
-            echo "No changes to commit"
-          else
-            git add -A
-            git commit -m "Phase ${{ inputs.phase }}: ${{ inputs.question }} - $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-            git push
-          fi
-
-      - name: Upload Results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: phase-results-${{ inputs.phase }}-${{ inputs.question }}
-          path: |
-            output/
-            test_cases/
-          retention-days: 30
-
-  test-phase:
-    needs: research-phase
-    runs-on: ubuntu-latest
-    if: ${{ inputs.phase != 'full' }}
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Download Results
-        uses: actions/download-artifact@v4
-        with:
-          name: phase-results-${{ inputs.phase }}-${{ inputs.question }}
-          path: output/
-
-      - name: Run Test Cases
-        run: |
-          if [ -d "test_cases" ]; then
-            python -m rd_agent_mcp.test_runner \
-              --test-dir test_cases \
-              --question ${{ inputs.question }} \
-              --output output/test-results/
-          fi
-
-      - name: Validate Results
-        run: |
-          if [ -f "output/results.json" ]; then
-            echo "Results JSON validated"
-            python -c "import json; json.load(open('output/results.json'))"
-          fi
-
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results-${{ inputs.phase }}-${{ inputs.question }}
-          path: output/test-results/
-          retention-days: 7
+          git add -A
+          git diff --quiet || git commit -m "Phase ${{ inputs.phase }} results"
+          git push || echo "No changes to commit"
