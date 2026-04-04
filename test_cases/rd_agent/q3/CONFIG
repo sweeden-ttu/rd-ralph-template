@@ -1,0 +1,4 @@
+max_points: 50
+class: ResearchDemoQuestion
+passing_threshold: 0.9
+description: Agentic workflow demonstration

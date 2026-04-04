@@ -1,0 +1,10 @@
+order:
+  - q1
+  - q2
+  - q3
+
+metadata:
+  course: C S 4383/5388-001
+  semester: Spring 2026
+  assignment: Homework 1
+  topic: Survey of Agentic Workflows in SE using LLM Agents

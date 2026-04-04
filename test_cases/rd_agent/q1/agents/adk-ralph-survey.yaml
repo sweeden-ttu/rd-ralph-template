@@ -1,0 +1,66 @@
+agent:
+  name: adk-ralph-survey
+  type: adk-ralph
+  model: granite4:3b
+  provider: ollama
+
+command:
+  binary: cargo
+  args:
+    - run
+    - --
+    - Create a Rust CLI tool to generate comparison diagrams for agent frameworks based on research survey data
+  working_dir: output/q1/adk-ralph
+
+environment:
+  OLLAMA_HOST: http://localhost:11434
+  RALPH_MODEL_PROVIDER: ollama
+  RALPH_LOCAL_MODEL: granite4:3b
+
+chroma:
+  collection: research
+  metadata:
+    phase: questions
+    question_id: q1
+    agent_type: adk-ralph
+
+tools:
+  - name: generate_diagram
+    description: Generate Mermaid/Markdown diagrams
+    output: figures/agent-comparison.md
+  - name: generate_table
+    description: Generate LaTeX table
+    output: tables/framework-comparison.tex
+  - name: generate_json
+    description: Generate structured JSON
+    output: results/q1-adk-ralph.json
+
+artifacts:
+  - prd.md
+  - design.md
+  - tasks.json
+  - bin/agent-diagram-tool
+
+retry:
+  max_attempts: 2
+  backoff: linear
+
+timeout: 900
+
+phases:
+  prd:
+    prompt: |
+      Create a PRD for a tool that generates comparison diagrams
+      for agent frameworks based on research survey data.
+  architect:
+    prompt: |
+      Design the system architecture for the comparison tool
+      with support for Mermaid, LaTeX, and JSON output.
+  loop:
+    prompt: |
+      Implement the Rust CLI tool with the following requirements:
+      - Parse JSON research data
+      - Generate Mermaid diagrams
+      - Generate LaTeX tables
+      - Output to specified directory
+      - Include comprehensive tests

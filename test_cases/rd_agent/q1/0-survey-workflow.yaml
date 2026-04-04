@@ -1,0 +1,98 @@
+class: ResearchSurveyTest
+alg: MultiAgentPipeline
+depth: 1
+
+diagram: |
+  Research Survey Workflow:
+  ┌─────────────────────────────────────────────────────────────────┐
+  │                    Phase 0: Questions                            │
+  ├─────────────────────────────────────────────────────────────────┤
+  │  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐        │
+  │  │ Homework   │───▶│  Papers    │───▶│  Topics     │        │
+  │  │   PDF       │    │  (arXiv)   │    │  Extraction │        │
+  │  └─────────────┘    └─────────────┘    └──────┬──────┘        │
+  │                                                │               │
+  │                                                ▼               │
+  │  ┌─────────────────────────────────────────────────────────┐    │
+  │  │              Questions (q1, q1a, q1b, q1c)             │    │
+  │  └─────────────────────────────────────────────────────────┘    │
+  └─────────────────────────────────────────────────────────────────┘
+
+num_agents: 2
+phase: questions
+
+start_state: homework_pdf
+win_states:
+  - q1
+  - q1a
+  - q1b
+  - q1c
+lose_states: []
+
+successors:
+  homework_pdf:
+    extract_questions: papers
+  papers:
+    fetch_papers: topics
+  topics:
+    generate_questions: q1
+  q1:
+    decompose:
+      - q1a
+      - q1b
+      - q1c
+
+evaluation:
+  q1: Survey of Agentic Workflows in SE
+  q1a: Definition of Agentic Workflows
+  q1b: Comparison of Frameworks
+  q1c: Research Gaps and Future Work
+
+criteria:
+  - Comprehensive literature review (minimum 10 papers)
+  - Comparison table of agent frameworks
+  - Research gap analysis
+  - Future directions (minimum 3)
+  - JSON schema validation
+
+expected_output:
+  survey_document: sec/7_questions_authors.tex
+  json_schema: results/q1-results.json
+  citations:
+    - chan2024mle-bench
+    - liu2025ml
+    - aide2025
+    - nam2025mle
+    - toledo2025ai
+
+reference_papers:
+  - https://arxiv.org/abs/2505.14738
+  - https://arxiv.org/abs/2504.xxxxx
+
+schema:
+  type: object
+  required:
+    - survey
+    - comparisons
+    - gaps
+    - future_directions
+  properties:
+    survey:
+      type: string
+      description: Survey text
+    comparisons:
+      type: array
+      items:
+        type: object
+        properties:
+          framework: string
+          paper: string
+          metrics: object
+    gaps:
+      type: array
+      items:
+        type: string
+    future_directions:
+      type: array
+      items:
+        type: string

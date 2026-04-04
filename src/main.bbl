@@ -1,0 +1,149 @@
+\begin{thebibliography}{28}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Achiam et~al.(2023)Achiam, Adler, Agarwal, Ahmad, Akkaya, Aleman, Almeida, Altenschmidt, Altman, Anadkat, et~al.]{achiam2023gpt}
+Josh Achiam, Steven Adler, Sandhini Agarwal, Lama Ahmad, Ilge Akkaya, Florencia~Leoni Aleman, Diogo Almeida, Janko Altenschmidt, Sam Altman, Shyamal Anadkat, et~al.
+\newblock Gpt-4 technical report.
+\newblock \emph{arXiv preprint arXiv:2303.08774}, 2023.
+
+\bibitem[Ali(2020)]{pycaret}
+Moez Ali.
+\newblock \emph{PyCaret: An open source, low-code machine learning library in Python}, April 2020.
+\newblock URL \url{https://www.pycaret.org}.
+\newblock PyCaret version 1.0.0.
+
+\bibitem[Chan et~al.(2024)Chan, Chowdhury, Jaffe, Aung, Sherburn, Mays, Starace, Liu, Maksin, Patwardhan, et~al.]{chan2024mle-bench}
+Jun~Shern Chan, Neil Chowdhury, Oliver Jaffe, James Aung, Dane Sherburn, Evan Mays, Giulio Starace, Kevin Liu, Leon Maksin, Tejal Patwardhan, et~al.
+\newblock Mle-bench: Evaluating machine learning agents on machine learning engineering.
+\newblock \emph{arXiv preprint arXiv:2410.07095}, 2024.
+
+\bibitem[Erickson et~al.(2020)Erickson, Mueller, Shirkov, Zhang, Larroy, Li, and Smola]{AutoGluon1}
+Nick Erickson, Jonas Mueller, Alexander Shirkov, Hang Zhang, Pedro Larroy, Mu~Li, and Alexander Smola.
+\newblock Autogluon-tabular: Robust and accurate automl for structured data.
+\newblock \emph{arXiv preprint arXiv:2003.06505}, 2020.
+
+\bibitem[Ghorbani et~al.(2023)Ghorbani, Firat, Freitag, Bapna, Krikun, Garcia, Chelba, and Cherry]{ghorbaniscaling}
+Behrooz Ghorbani, Orhan Firat, Markus Freitag, Ankur Bapna, Maxim Krikun, Xavier Garcia, Ciprian Chelba, and Colin Cherry.
+\newblock Scaling laws for neural machine translation.
+\newblock In \emph{International Conference on Learning Representations}, 2023.
+
+\bibitem[Graves(2012)]{graves2012long}
+Alex Graves.
+\newblock Long short-term memory.
+\newblock \emph{Supervised sequence labelling with recurrent neural networks}, pp.\  37--45, 2012.
+
+\bibitem[{HeyNeo Team}(2025)]{neo2025}
+{HeyNeo Team}.
+\newblock Neo: Next-generation ai agents.
+\newblock \url{https://heyneo.so/blog}, 2025.
+
+\bibitem[Huang et~al.(2023)Huang, Vora, Liang, and Leskovec]{huang2023mlagentbench}
+Qian Huang, Jian Vora, Percy Liang, and Jure Leskovec.
+\newblock Mlagentbench: Evaluating language agents on machine learning experimentation.
+\newblock \emph{arXiv preprint arXiv:2310.03302}, 2023.
+
+\bibitem[Isihara(2013)]{isihara2013statistical}
+Akira Isihara.
+\newblock \emph{Statistical physics}.
+\newblock Academic Press, 2013.
+
+\bibitem[Isik et~al.(2025)Isik, Ponomareva, Hazimeh, Paparas, Vassilvitskii, and Koyejo]{isikscaling}
+Berivan Isik, Natalia Ponomareva, Hussein Hazimeh, Dimitris Paparas, Sergei Vassilvitskii, and Sanmi Koyejo.
+\newblock Scaling laws for downstream task performance in machine translation.
+\newblock In \emph{The Thirteenth International Conference on Learning Representations}, 2025.
+
+\bibitem[Jiang et~al.(2025)Jiang, Schmidt, Srikanth, Xu, Kaplan, Jacenko, and Wu]{aide2025}
+Zhengyao Jiang, Dominik Schmidt, Dhruv Srikanth, Dixing Xu, Ian Kaplan, Deniss Jacenko, and Yuxiang Wu.
+\newblock Aide: Ai-driven exploration in the space of code.
+\newblock \emph{arXiv preprint arXiv:2502.13138}, 2025.
+
+\bibitem[Jing et~al.(2024)Jing, Huang, Wang, Yao, Yu, Ma, Zhang, Du, and Yu]{jing2024dsbench}
+Liqiang Jing, Zhehui Huang, Xiaoyang Wang, Wenlin Yao, Wenhao Yu, Kaixin Ma, Hongming Zhang, Xinya Du, and Dong Yu.
+\newblock Dsbench: How far are data science agents to becoming data science experts?
+\newblock \emph{arXiv preprint arXiv:2409.07703}, 2024.
+
+\bibitem[Kulibaba et~al.(2025)Kulibaba, Dzhalilov, Pakhomov, Svidchenko, Gasnikov, and Shpilman]{kulibaba2025kompeteai}
+Stepan Kulibaba, Artem Dzhalilov, Roman Pakhomov, Oleg Svidchenko, Alexander Gasnikov, and Aleksei Shpilman.
+\newblock Kompeteai: Accelerated autonomous multi-agent system for end-to-end pipeline generation for machine learning problems.
+\newblock \emph{arXiv preprint arXiv:2508.10177}, 2025.
+
+\bibitem[Liang et~al.(2025)Liang, Bo, Gui, Zhu, Zhong, Zhao, Sun, Zhang, Zhou, Chen, et~al.]{liang2025kag}
+Lei Liang, Zhongpu Bo, Zhengke Gui, Zhongshu Zhu, Ling Zhong, Peilong Zhao, Mengshu Sun, Zhiqiang Zhang, Jun Zhou, Wenguang Chen, et~al.
+\newblock Kag: Boosting llms in professional domains via knowledge augmented generation.
+\newblock In \emph{Companion Proceedings of the ACM on Web Conference 2025}, pp.\  334--343, 2025.
+
+\bibitem[Liu et~al.(2024)Liu, Feng, Xue, Wang, Wu, Lu, Zhao, Deng, Zhang, Ruan, et~al.]{liu2024deepseek}
+Aixin Liu, Bei Feng, Bing Xue, Bingxuan Wang, Bochao Wu, Chengda Lu, Chenggang Zhao, Chengqi Deng, Chenyu Zhang, Chong Ruan, et~al.
+\newblock Deepseek-v3 technical report.
+\newblock \emph{arXiv preprint arXiv:2412.19437}, 2024.
+
+\bibitem[Liu et~al.(2025)Liu, Cai, Zhu, Zheng, Chen, Wen, Wang, Chen, et~al.]{liu2025ml}
+Zexi Liu, Yuzhu Cai, Xinyu Zhu, Yujie Zheng, Runkun Chen, Ying Wen, Yanfeng Wang, Siheng Chen, et~al.
+\newblock Ml-master: Towards ai-for-ai via integration of exploration and reasoning.
+\newblock \emph{arXiv preprint arXiv:2506.16499}, 2025.
+
+\bibitem[Majumder et~al.(2024)Majumder, Surana, Agarwal, Mishra, Meena, Prakhar, Vora, Khot, Sabharwal, and Clark]{majumder2024discoverybench}
+Bodhisattwa~Prasad Majumder, Harshit Surana, Dhruv Agarwal, Bhavana~Dalvi Mishra, Abhijeetsingh Meena, Aryan Prakhar, Tirth Vora, Tushar Khot, Ashish Sabharwal, and Peter Clark.
+\newblock Discoverybench: Towards data-driven discovery with large language models.
+\newblock \emph{arXiv preprint arXiv:2407.01725}, 2024.
+
+\bibitem[Mansurova et~al.(2024)Mansurova, Mansurova, and Nugumanova]{mansurova2024qa}
+Aigerim Mansurova, Aiganym Mansurova, and Aliya Nugumanova.
+\newblock Qa-rag: Exploring llm reliance on external knowledge.
+\newblock \emph{Big Data and Cognitive Computing}, 8\penalty0 (9):\penalty0 115, 2024.
+
+\bibitem[Nam et~al.(2025)Nam, Yoon, Chen, Shin, Ar{\i}k, and Pfister]{nam2025mle}
+Jaehyun Nam, Jinsung Yoon, Jiefeng Chen, Jinwoo Shin, Sercan~{\"O} Ar{\i}k, and Tomas Pfister.
+\newblock Mle-star: Machine learning engineering agent via search and targeted refinement.
+\newblock \emph{arXiv preprint arXiv:2506.15692}, 2025.
+
+\bibitem[Sahu et~al.(2024)Sahu, Puri, Rodriguez, Abaskohi, Chegini, Drouin, Taslakian, Zantedeschi, Lacoste, Vazquez, et~al.]{sahu2024insightbench}
+Gaurav Sahu, Abhay Puri, Juan Rodriguez, Amirhossein Abaskohi, Mohammad Chegini, Alexandre Drouin, Perouz Taslakian, Valentina Zantedeschi, Alexandre Lacoste, David Vazquez, et~al.
+\newblock Insightbench: Evaluating business analytics agents through multi-step insight generation.
+\newblock \emph{arXiv preprint arXiv:2407.06423}, 2024.
+
+\bibitem[Sepehri et~al.(2025)Sepehri, Fabian, Soltanolkotabi, and Soltanolkotabi]{sepehrimediconfusion}
+Mohammad~Shahab Sepehri, Zalan Fabian, Maryam Soltanolkotabi, and Mahdi Soltanolkotabi.
+\newblock Mediconfusion: Can you trust your ai radiologist? probing the reliability of multimodal medical foundation models.
+\newblock In \emph{The Thirteenth International Conference on Learning Representations}, 2025.
+
+\bibitem[Tang et~al.(2024)Tang, Fang, Zhou, Yang, Zhong, Hu, Kirchhoff, and Karypis]{AutoGluon2}
+Zhiqiang Tang, Haoyang Fang, Su~Zhou, Taojiannan Yang, Zihan Zhong, Tony Hu, Katrin Kirchhoff, and George Karypis.
+\newblock Autogluon-multimodal (automm): Supercharging multimodal automl with foundation models.
+\newblock \emph{arXiv preprint arXiv:2404.16233}, 2024.
+
+\bibitem[Team et~al.(2023)Team, Anil, Borgeaud, Alayrac, Yu, Soricut, Schalkwyk, Dai, Hauth, Millican, et~al.]{team2023gemini}
+Gemini Team, Rohan Anil, Sebastian Borgeaud, Jean-Baptiste Alayrac, Jiahui Yu, Radu Soricut, Johan Schalkwyk, Andrew~M Dai, Anja Hauth, Katie Millican, et~al.
+\newblock Gemini: a family of highly capable multimodal models.
+\newblock \emph{arXiv preprint arXiv:2312.11805}, 2023.
+
+\bibitem[Team et~al.(2025)Team, Zhang, Feng, Yan, Yuan, Yu, He, Huang, Hou, Nie, et~al.]{team2025novelseek}
+NovelSeek Team, Bo~Zhang, Shiyang Feng, Xiangchao Yan, Jiakang Yuan, Zhiyin Yu, Xiaohan He, Songtao Huang, Shaowei Hou, Zheng Nie, et~al.
+\newblock Novelseek: When agent becomes the scientist--building closed-loop system from hypothesis to verification.
+\newblock \emph{arXiv preprint arXiv:2505.16938}, 2025.
+
+\bibitem[Toledo et~al.(2025)Toledo, Hambardzumyan, Josifoski, Hazra, Baldwin, Audran-Reiss, Kuchnik, Magka, Jiang, Lupidi, et~al.]{toledo2025ai}
+Edan Toledo, Karen Hambardzumyan, Martin Josifoski, Rishi Hazra, Nicolas Baldwin, Alexis Audran-Reiss, Michael Kuchnik, Despoina Magka, Minqi Jiang, Alisia~Maria Lupidi, et~al.
+\newblock Ai research agents for machine learning: Search, exploration, and generalization in mle-bench.
+\newblock \emph{arXiv preprint arXiv:2507.02554}, 2025.
+
+\bibitem[Wang et~al.(2024)Wang, Li, Song, Xu, Tang, Zhuge, Pan, Song, Li, Singh, et~al.]{wang2024openhands}
+Xingyao Wang, Boxuan Li, Yufan Song, Frank~F Xu, Xiangru Tang, Mingchen Zhuge, Jiayi Pan, Yueqi Song, Bowen Li, Jaskirat Singh, et~al.
+\newblock Openhands: An open platform for ai software developers as generalist agents.
+\newblock \emph{arXiv preprint arXiv:2407.16741}, 2024.
+
+\bibitem[Yang et~al.(2025)Yang, Zhang, Wu, Zhang, Zhang, Yu, Hu, and Wang]{yang2025twinmarket}
+Yuzhe Yang, Yifei Zhang, Minghao Wu, Kaidi Zhang, Yunmiao Zhang, Honghai Yu, Yan Hu, and Benyou Wang.
+\newblock Twinmarket: A scalable behavioral and social simulation for financial markets.
+\newblock \emph{arXiv preprint arXiv:2502.01506}, 2025.
+
+\bibitem[Yuan et~al.(2025)Yuan, Zhang, He, Nitta, Hu, Wang, Shah, Huang, Stojanovi{\v{c}}, Krumholz, et~al.]{yuan2025contextgnn}
+Yiwen Yuan, Zecheng Zhang, Xinwei He, Akihiro Nitta, Weihua Hu, Dong Wang, Manan Shah, Shenyang Huang, Bla{\v{z}} Stojanovi{\v{c}}, Alan Krumholz, et~al.
+\newblock Contextgnn: Beyond two-tower recommendation systems.
+\newblock In \emph{Thirteenth International Conference on Learning Representations}, 2025.
+
+\end{thebibliography}

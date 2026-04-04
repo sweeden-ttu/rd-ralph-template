@@ -1,0 +1,66 @@
+agent:
+  name: rd-agent-survey
+  type: rd-agent
+  model: ibm/granite-4-h-tiny
+  embedding_model: text-embedding-nomic-embed-text-v1.5
+  provider: lm_studio
+
+command:
+  module: rdagent
+  scenario: data_science
+  args:
+    - --task
+    - "Analyze agentic workflows in software engineering papers and generate comprehensive survey"
+    - --output
+    - output/q1/rd-agent
+
+environment:
+  LM_STUDIO_BASE_URL: http://localhost:1234/v1
+  LITELLM_OPENAI_API_KEY: lm-studio
+  EMBEDDING_MODEL: text-embedding-nomic-embed-text-v1.5
+
+chroma:
+  collection: research
+  metadata:
+    phase: questions
+    question_id: q1
+    agent_type: rd-agent
+
+tools:
+  - name: file_write
+    description: Write survey document
+    output: sec/7_questions_authors.tex
+  - name: json_write
+    description: Write results JSON
+    output: results/q1-results.json
+  - name: chroma_store
+    description: Store embeddings in ChromaDB
+    collection: research
+
+retry:
+  max_attempts: 3
+  backoff: exponential
+
+timeout: 600
+
+llm_calls:
+  - purpose: literature_review
+    model: ibm/granite-4-h-tiny
+    prompt_template: |
+      Analyze the following papers for agentic workflows in SE:
+      {papers}
+      
+      Extract:
+      1. Key definitions of agentic workflows
+      2. Framework comparisons
+      3. Research gaps
+      4. Future directions
+      
+      Format as JSON matching the schema.
+  - purpose: synthesis
+    model: ibm/granite-4-h-tiny
+    prompt_template: |
+      Synthesize findings into structured survey:
+      {findings}
+      
+      Generate LaTeX compatible markdown.

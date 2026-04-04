@@ -1,0 +1,4 @@
+max_points: 15
+class: ResearchSurveyQuestion
+passing_threshold: 0.7
+description: Literature survey and analysis of agentic workflows

@@ -1,0 +1,4 @@
+max_points: 35
+class: ResearchReproductionQuestion
+passing_threshold: 0.8
+description: Reproduction study of R&D-Agent paper
