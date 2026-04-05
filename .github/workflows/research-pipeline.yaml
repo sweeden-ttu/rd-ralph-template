@@ -73,6 +73,9 @@ jobs:
 
       - name: Run Phase
         env:
+          RD_AGENT_PATH: ${{ github.workspace }}/agents/rd-agent
+          ADK_RALPH_PATH: ${{ github.workspace }}/agents/adk-ralph
+          RD_AGENT_MCP_EXEC_AGENTS: "false"
           CHAT_MODEL: ${{ inputs.provider == 'auto' && 'gpt-4o' || inputs.provider }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

@@ -1,169 +1,177 @@
 # Research Template
 
-A GitHub template for academic research papers using LLM agents with rd-agent and adk-ralph.
+A GitHub template for academic work that combines an **IEEE-style article**, **CS homework–driven experiments**, and **LLM agents** (`rd-agent`, `adk-ralph`) orchestrated via **[rd-agent-mcp](https://github.com/sweeden-ttu/rd-agent-mcp)** (CLI + MCP).
 
 ## Overview
 
-This template demonstrates a complete research workflow using:
-- **rd-agent**: Microsoft R&D Agent for automated research
-- **adk-ralph**: Multi-agent development for coding artifacts
-- **ChromaDB**: Local vector embeddings
-- **LangGraph**: Orchestration pipeline
+- **rd-agent** — Microsoft R&D Agent (research / data-science scenarios), as a submodule under `agents/rd-agent`.
+- **adk-ralph** — Multi-agent codegen (Rust-first workflow), as a submodule under `agents/adk-ralph`.
+- **rd-agent-mcp** — Phases, LangGraph pipeline, Chroma embeddings, `run_agent_pipeline` / `compile_results` (install separately; not a submodule here).
+- **ChromaDB / LM Studio** — Local embeddings and chat via OpenAI-compatible endpoints.
+
+Submodule URLs and setup: **[SUBMODULES.md](./SUBMODULES.md)**.
 
 ## Quick Start
 
-### 1. Create New Repository
+### 1. Create a new repository
 
-Click "Use this template" above to create a new repository.
+Use GitHub **“Use this template”** on this repo.
 
-### 2. Clone and Setup
+### 2. Clone and init submodules
 
 ```bash
 git clone https://github.com/YOUR_NAME/your-research-repo
 cd your-research-repo
-
-# Initialize submodules (if using agents as submodules)
 git submodule update --init --recursive
 ```
 
-### 3. Configure Environment
-
-Copy `.env.example` to `.env` and configure:
+### 3. Configure environment
 
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env` with your settings:
-```bash
-CHAT_MODEL=ibm/granite-4-h-tiny
-EMBEDDING_MODEL=text-embedding-nomic-embed-text-v1.5
-LM_STUDIO_BASE_URL=http://localhost:1234/v1
-```
+Edit `.env` (see [`.env.example`](./.env.example)):
 
-### 4. Edit Paper Source
+- `LM_STUDIO_BASE_URL`, `CHAT_MODEL`, `EMBEDDING_MODEL`
+- `RD_AGENT_PATH`, `ADK_RALPH_PATH` (default `./agents/rd-agent`, `./agents/adk-ralph`)
 
-Edit files in `src/` directory (LaTeX format).
+LM Studio agent template (optional): [`config/lmstudio-granite-agent-to-agent.jinja`](./config/lmstudio-granite-agent-to-agent.jinja) — details in [`config/README.md`](./config/README.md).
 
-### 5. Automatic Builds
+### 4. Article source (IEEE)
 
-Push to trigger LaTeX → PDF compilation.
+- **Driver:** [`src/ieee_journal.tex`](./src/ieee_journal.tex) (IEEEtran).
+- **Body sections:** [`src/sec/`](./src/sec/) — numbered `0_abstract.tex` … `9_meta_review.tex` (multi-section layout, peer-review–style annotations via [`src/review_macros.tex`](./src/review_macros.tex)).
+- **Coursework monograph (article class):** [`src/main.tex`](./src/main.tex) pulls in [`intro_zyf.tex`](./src/intro_zyf.tex), [`prelim.tex`](./src/prelim.tex), [`method_zyf.tex`](./src/method_zyf.tex), [`experiment.tex`](./src/experiment.tex), [`conclusion.tex`](./src/conclusion.tex), [`reproducibility.tex`](./src/reproducibility.tex), [`ethics.tex`](./src/ethics.tex), [`appendix.tex`](./src/appendix.tex), plus [`main.bib`](./src/main.bib) / [`main.bbl`](./src/main.bbl) (BibTeX) and local [`natbib.sty`](./src/natbib.sty) / [`fancyhdr.sty`](./src/fancyhdr.sty) on the path. Build: `cd src && pdflatex main && bibtex main && pdflatex main && pdflatex main`.
+- **Legacy ICLR-style tree:** [`src/archive/rd-agent-paper/`](./src/archive/rd-agent-paper/).
 
-## Research Pipeline
+### 5. Builds (GitHub Actions)
 
-### Phases
+- **IEEE article:** workflow **“Build IEEE PDF”** — triggers on changes under `src/**/*.tex` (see [`.github/workflows/build-ieee-pdf.yml`](./.github/workflows/build-ieee-pdf.yml)).
+- Other workflows: **Research Pipeline**, **Agent Demo**, **Build LaTeX PDF** (archive paper path) — see `.github/workflows/`.
 
-| Phase | Description | Agents |
-|-------|-------------|--------|
-| Questions | Extract questions from sources | rd-agent |
-| Experiment | Design experiments | rd-agent + adk-ralph |
-| Embeddings | Generate ChromaDB embeddings | LM Studio |
-| Agent | Run agents (parallel) | rd-agent + adk-ralph |
-| Results | Compile to JSON/LaTeX | Both |
+## Research pipeline (rd-agent-mcp)
 
-### Running Phases
+Install the package, then use Typer commands (names use **kebab-case** on the CLI):
 
 ```bash
-# Run specific phase
+pip install -e /path/to/rd-agent-mcp   # or your install method
+
 rd-agent-mcp run-phase questions
 rd-agent-mcp run-phase experiment
+rd-agent-mcp run-phase embeddings
 rd-agent-mcp run-phase agent
 rd-agent-mcp run-phase results
 
-# Run full pipeline
-rd-agent-mcp research-phase --topic "Your Topic"
+rd-agent-mcp research-phase --topic "Your topic" --homework-pdf homework-assignment.txt
 ```
 
-## Test Cases
+| Phase | Description | Agents / tools |
+|-------|-------------|----------------|
+| Questions | Extract questions from homework/papers | rd-agent (LLM) |
+| Experiment | Design experiments | rd-agent + prompts |
+| Embeddings | Chroma + embeddings | LM Studio |
+| Agent | Run or simulate agents | rd-agent + adk-ralph (if enabled) |
+| Results | Compile JSON / LaTeX sections | Pipeline |
 
-Test cases follow a YAML format inspired by GraphGameTreeTest:
+**MCP:** set server `cwd` to this repo when calling tools so paths like `homework-assignment.txt` resolve. Snippets: [`mcp/examples/`](./mcp/examples/) (e.g. [`mcp-tool-pipeline.md`](./mcp/examples/mcp-tool-pipeline.md), [`mcp-tool-payloads.json`](./mcp/examples/mcp-tool-payloads.json)).
+
+## Test cases
+
+YAML workflows and per-question configs for the homework → article thread:
+
+**Article sections (`src/sec`):** iterative rd-agent / adk-ralph specs live under [`test_cases/article_sections/`](./test_cases/article_sections/README.md) (regenerate with `python scripts/generate_article_section_agents.py`).
 
 ```
 test_cases/
-├── CONFIG                      # Main config
+├── CONFIG
 ├── rd_agent/
-│   ├── q1/                   # Question 1
+│   ├── mcp-graph-hw1-manifest.yaml
+│   ├── q1/
 │   │   ├── CONFIG
-│   │   ├── 0-survey.yaml
-│   │   └── agents/
-│   │       ├── rd-agent.yaml
-│   │       └── adk-ralph.yaml
+│   │   ├── agents/
+│   │   │   ├── rd-agent-survey.yaml
+│   │   │   └── adk-ralph-survey.yaml
+│   │   └── 0-experiment-workflow.yaml
 │   ├── q2/
+│   │   ├── CONFIG
+│   │   ├── agents/ …
+│   │   └── 0-experiment-workflow.yaml
 │   └── q3/
+│       ├── CONFIG
+│       ├── agents/ …
+│       └── 0-experiment-workflow.yaml
+├── article_sections/        # per src/sec/*.tex iteration agents (sec00–sec09)
+│   ├── README.md
+│   ├── sec_manifest.yaml
+│   └── secNN/agents/
 ```
 
-### Running Tests
+Validate:
 
 ```bash
+rd-agent-mcp validate-tests --test-dir test_cases
 python -m rd_agent_mcp.test_runner --test-dir test_cases --question q1
 ```
 
-## Homework Assignment (C S 4383/5388-001)
+## Homework seed → IEEE narrative (CS 6343-style)
 
-This template supports the Spring 2026 homework:
+- **Assignment text:** `homework-assignment.txt` (committed). Add `homework-assignment.pdf` locally if you use PDF extractors.
+- **Assets:** e.g. `Secret.bmp` — see [`assets/README.md`](./assets/README.md).
+- **Figures / JSON:** `scripts/run_coursework_outputs.py` → `output/diagrams/`, `output/results/` (see article `\graphicspath` in `src/ieee_journal.tex`).
 
-### Part 1: Survey Paper (q1)
-- 6-8 pages, IEEE format
-- Topic: Survey of Agentic Workflows in SE using LLM Agents
+## Examples (no agents required)
 
-### Part 2: Reproduction Study (q2)
-- Reproduce key finding from R&D-Agent paper
-- Include JSON results and diagrams
+- **Python:** [`examples/python/`](./examples/python/) — `generate_results.py`, `plot_diagram.py`.
+- **Rust:** [`examples/rust/`](./examples/rust/) — `analyze_stats` CLI ([`examples/README.md`](./examples/README.md)).
 
-### Part 3: Agentic Workflow Demo (q3)
-Demonstrate using rd-agent and adk-ralph to produce:
-- Python scripts with JSON output
-- Rust CLI tools
-- LaTeX tables and figures
+## MCP examples and skills
 
-## GitHub Actions
+- [`mcp/examples/`](./mcp/examples/) — pipelines, LM Studio notes, agent shell checks.
+- [`skills/`](./skills/) — Cursor `SKILL.md` files; install per [`skills/README.md`](./skills/README.md).
 
-### Build PDF
-Automatically compiles LaTeX on push to main.
+## Cursor + LM Studio model sync
 
-### Research Pipeline
-Run research phases manually:
-1. Go to Actions tab
-2. Select "Research Pipeline"
-3. Choose phase and question
-4. Click "Run workflow"
+```bash
+python3 scripts/sync_cursor_lmstudio_models.py --union-lms --backup
+```
 
-### Agent Demo
-Demonstrates agent capabilities:
-1. Python data analysis → JSON
-2. Rust statistics tool → JSON
-3. LaTeX table generation
+Details: [`scripts/README.md`](./scripts/README.md).
 
-## Agent Definitions
+## GitHub Actions (summary)
 
-### rd-agent (Research Agent)
-- Data analysis and processing
-- ML model training
-- Literature review
-- Benchmark execution
+| Workflow | Purpose |
+|----------|---------|
+| **Build IEEE PDF** | `latexmk` on `src/ieee_journal.tex` |
+| **Research Pipeline** | Manual phase runs, optional test validation |
+| **Agent Demo** | Python / Rust / LaTeX demo jobs |
+| **Build LaTeX PDF** | Archive / full paper build path |
 
-### adk-ralph (Development Agent)
-- Code generation (Rust, Python, etc.)
-- Test-driven development
-- CLI tool creation
-- Multi-language support
-
-## Directory Structure
+## Directory structure
 
 ```
 .
-├── .github/workflows/      # GitHub Actions
-├── src/                   # LaTeX paper source
-├── test_cases/           # YAML test cases
-├── agents/               # Agent submodules
-├── examples/             # Example code
-├── output/               # Generated outputs
-│   ├── results/
-│   ├── embeddings/
-│   └── diagrams/
+├── .github/workflows/       # CI (IEEE PDF, research pipeline, demos, archive PDF)
+├── SUBMODULES.md            # agents/rd-agent + agents/adk-ralph
+├── src/
+│   ├── ieee_journal.tex
+│   ├── review_macros.tex
+│   ├── sec/                  # 0_abstract … 9_meta_review
+│   └── archive/rd-agent-paper/
+├── mcp/examples/
+├── skills/
+├── test_cases/
+│   ├── rd_agent/             # q1–q3 homework workflows
+│   └── article_sections/     # ieee_journal sec/*.tex iteration agents
+├── agents/                   # git submodules (rd-agent, adk-ralph)
+├── assets/
+├── config/
+├── examples/                 # python/, rust/
+├── scripts/
+├── output/                   # generated (often gitignored)
 └── README.md
 ```
 
 ## License
 
-CC-BY 4.0 - See LICENSE file for details.
+CC-BY 4.0 — see [LICENSE](./LICENSE).

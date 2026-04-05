@@ -1,120 +1,148 @@
-# rd-agent and adk-ralph Integration
+# Git submodules: `rd-agent` and `adk-ralph`
 
-This template uses two specialized agents for research and development tasks.
+This template tracks **Microsoft R&D Agent** (`rd-agent`) and **adk-ralph** as Git **submodules** under `agents/`, so your clone pins known-good revisions and CI can set `RD_AGENT_PATH` / `ADK_RALPH_PATH` predictably.
 
-## rd-agent (Research Agent)
+| Path | Remote (see [`.gitmodules`](./.gitmodules)) |
+|------|---------------------------------------------|
+| `agents/rd-agent` | `https://github.com/sweeden-ttu/rd-agent` |
+| `agents/adk-ralph` | `https://github.com/sweeden-ttu/adk-ralph` |
 
-### Purpose
-Automated research and data science tasks.
+For broader context on how they fit the homework → article → MCP workflow, see the main [README](./README.md).
 
-### Installation
+---
+
+## Initialize submodules (recommended)
+
+From the **repository root**:
+
 ```bash
-cd agents
-git clone https://github.com/sweeden-ttu/rd-agent
-cd rd-agent
+git submodule update --init --recursive
+```
+
+After this, `agents/rd-agent` and `agents/adk-ralph` are populated. Do **not** run a plain `git clone` into `agents/` unless you intend to detach from submodule tracking.
+
+---
+
+## Install and build
+
+### rd-agent (Python)
+
+```bash
+cd agents/rd-agent
+# Use a dedicated env (e.g. conda) per your machine policy, then:
 pip install -e .
 ```
 
-### Usage
+Run tasks from the **rd-agent repo** (or ensure its package is on `PYTHONPATH`). Typical entry points follow upstream docs, e.g.:
+
 ```bash
-rdagent data_science --task "Analyze dataset for patterns"
-rdagent general_model --paper "https://arxiv.org/abs/2505.14738"
+rdagent data_science --task "Your task description"
 ```
 
-### Capabilities
-- Literature review and synthesis
-- Data analysis and visualization
-- ML model training and evaluation
-- Benchmark execution
-- Hypothesis generation
+If `rdagent` is not on `PATH`, use the same interpreter you used for `pip install -e .` (often `python -m ...` per that repo’s README).
 
-## adk-ralph (Development Agent)
+**Capabilities (typical):** literature review, data-science scenarios, benchmarks, experiment-oriented workflows.
 
-### Purpose
-Multi-agent code generation and system implementation.
+### adk-ralph (Rust)
 
-### Installation
 ```bash
-cd agents
-git clone https://github.com/sweeden-ttu/adk-ralph
-cd adk-ralph
+cd agents/adk-ralph
 cargo build --release
 ```
 
-### Usage
 ```bash
-# Full pipeline
-cargo run -- "Create a CLI tool for data analysis"
+# Example: one-shot codegen task
+cargo run --release -- "Your implementation task"
 
-# Interactive chat
-cargo run -- chat
+# Interactive mode (if supported by that revision)
+cargo run --release -- chat
 ```
 
-### Capabilities
-- Rust, Python, TypeScript, Go, Java
-- Test-driven development
-- System architecture design
-- PRD and design document generation
-- Multi-agent orchestration
+**Capabilities (typical):** multi-step codegen, Rust/Python/TS and other targets, PRD/design artifacts, tests.
 
-## Configuration
+---
 
-### Environment Variables
+## Environment variables
+
+Align with [`.env.example`](./.env.example):
 
 ```bash
-# rd-agent
-RD_AGENT_MODEL=ibm/granite-4-h-tiny
-RD_AGENT_PROVIDER=lm_studio
-LM_STUDIO_BASE_URL=http://localhost:1234/v1
+# Paths used by rd-agent-mcp wrappers / coordinator
+RD_AGENT_PATH=./agents/rd-agent
+ADK_RALPH_PATH=./agents/adk-ralph
 
-# adk-ralph
+# rd-agent ↔ OpenAI-compatible API (e.g. LM Studio)
+LM_STUDIO_BASE_URL=http://127.0.0.1:1234/v1
+LITELLM_OPENAI_API_BASE=http://127.0.0.1:1234/v1
+OPENAI_API_BASE=http://127.0.0.1:1234/v1
+LITELLM_OPENAI_API_KEY=lm-studio
+
+# adk-ralph ↔ Ollama (example)
+OLLAMA_HOST=http://localhost:11434
 RALPH_MODEL_PROVIDER=ollama
 RALPH_LOCAL_MODEL=granite4:3b
-OLLAMA_HOST=http://localhost:11434
 ```
 
-### Cloud Fallback
+**Trusted environments only:** `RD_AGENT_MCP_EXEC_AGENTS=true` allows `rd-agent-mcp` to spawn real subprocesses into these repos instead of simulated stubs.
 
-If local LLM is unavailable, agents fall back to cloud providers:
+Optional cloud fallbacks (if you configure them in the agents themselves):
 
 ```bash
-OPENAI_API_KEY=sk-...
-ANTHROPIC_API_KEY=sk-ant-...
-GEMINI_API_KEY=...
+OPENAI_API_KEY=...
+ANTHROPIC_API_KEY=...
 ```
 
-## Agent Routing
+---
 
-| Task Type | Primary Agent | Secondary Agent |
-|-----------|---------------|-----------------|
-| Data Analysis | rd-agent | adk-ralph |
-| Literature Review | rd-agent | - |
-| Code Generation | adk-ralph | rd-agent |
-| Experiment Design | Both | - |
-| Results Compilation | rd-agent | adk-ralph |
+## Agent routing (high level)
 
-## Examples
+| Task type | Primary | Secondary |
+|-----------|---------|-----------|
+| Data analysis / survey | rd-agent | adk-ralph |
+| Literature-style synthesis | rd-agent | — |
+| Code / CLI / implementation | adk-ralph | rd-agent |
+| Experiment design | both | — |
+| Compile pipeline JSON | rd-agent-mcp (`results` phase or MCP `compile_results`) | — |
 
-### Python Data Analysis (rd-agent)
-```python
-rdagent data_science --task "Analyze MLE-Bench results"
-# Output: results.json with metrics
-```
+---
 
-### Rust CLI Tool (adk-ralph)
+## Local smoke checks
+
+From repo root (best-effort; skips missing dirs):
+
 ```bash
-cargo run -- "Create a statistics CLI tool that outputs JSON"
-# Output: bin/stat-cli, prd.md, design.md, tasks.json
+bash mcp/examples/agent-commands.sh
 ```
 
-### Combined Workflow
+---
+
+## Homework-oriented agent configs
+
+Per-question YAML under **`test_cases/rd_agent/q{1,2,3}/agents/`** (`rd-agent-survey.yaml`, `adk-ralph-survey.yaml`) describes tasks for **CS 6343-style** tracks (AES diffusion, ECB/CBC, TLS). They are **specs** for humans/tools; execution still depends on `rd-agent-mcp`, Cursor MCP, or manual runs with the submodule checkouts.
+
+---
+
+## Results compilation
+
+There is **no** standalone `rd-agent-mcp compile-results` CLI in the usual Typer surface. Use one of:
+
+- **MCP:** `compile_results` with `agent_results` from `run_agent_pipeline`, or  
+- **CLI:** run the graph phase that produces results, e.g. `rd-agent-mcp run-phase results` (with appropriate prior state / wiring per [rd-agent-mcp](https://github.com/sweeden-ttu/rd-agent-mcp) docs).
+
+Install **rd-agent-mcp** separately (e.g. `pip install -e /path/to/rd-agent-mcp`).
+
+---
+
+## Example combined flow
+
 ```bash
-# 1. Generate analysis with rd-agent
-rdagent data_science --task "Process survey data"
+# 1. Research / analysis (rd-agent)
+cd agents/rd-agent && rdagent data_science --task "Summarize Q1 AES Hamming methodology"
 
-# 2. Create visualization tool with adk-ralph
-cargo run -- "Create a Rust tool to generate charts from JSON"
+# 2. Tooling (adk-ralph)
+cd ../adk-ralph && cargo run --release -- "CLI to export Hamming JSON for plots"
 
-# 3. Compile results
-rd-agent-mcp compile-results --input output/
+# 3. Validate template test layout
+cd ../../..   # repo root
+rd-agent-mcp validate-tests --test-dir test_cases
 ```

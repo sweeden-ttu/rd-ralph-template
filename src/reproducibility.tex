@@ -1,2 +1,8 @@
 \section*{Reproducibility Statement}
-To ensure reproducibility of our work, we provide comprehensive implementation details and resources throughout the paper and supplementary materials. The complete source code for the R\&D-Agent framework, including all six modular components and our discovered optimal configuration, is available as anonymous supplementary material. Algorithm~\ref{alg:rd_agent_framework} presents the high-level framework structure, with detailed component implementations described in Section~\ref{sec:method-design}. Complete prompts and technical specifications for each component are provided in Appendix~\ref{app:prompts}. Our experimental setup is fully specified in Section~\ref{sec:exp_setup}, including hardware environment, time constraints, and evaluation protocol on MLE-Bench. All reported results represent mean $\pm$ SEM across three independent runs with different random seeds to ensure statistical robustness. Upon acceptance, we will publicly release the complete codebase with documentation and tutorials.
+
+\begin{itemize}
+  \item \textbf{Code:} \texttt{scripts/toy\_aes128\_trace.py} (AES tracer, S-box, \texttt{xtime}, MixColumns including \texttt{M\_NEW}, key expansion, \texttt{encrypt\_trace}, Hamming helpers).
+  \item \textbf{Driver:} \texttt{scripts/run\_coursework\_outputs.py} regenerates \texttt{output/results/*.json} and \texttt{output/diagrams/*.pdf}; requires Python~3 with \texttt{numpy}, \texttt{matplotlib}, \texttt{pycryptodome}, \texttt{Pillow}, and \texttt{openssl} on \texttt{PATH}. Q3 performs live TLS handshakes.
+  \item \textbf{LaTeX:} Build from \texttt{src/} with \texttt{pdflatex main}, \texttt{bibtex main}, then \texttt{pdflatex main} twice. Bibliography source is \texttt{main.bib}; processed file \texttt{main.bbl} is produced by BibTeX.
+  \item \textbf{Environment:} \texttt{conda activate rd-ralph-template} matches template defaults.
+\end{itemize}
