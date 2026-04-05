@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-05T00:29:08.585158+00:00",
+  "generated_at": "2026-04-05T00:46:56.322356+00:00",
   "method": "openssl s_client (live TLS); supplement with Wireshark ClientHello captures for coursework",
   "hosts": [
     {

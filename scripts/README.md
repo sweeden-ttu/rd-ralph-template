@@ -57,6 +57,18 @@ python scripts/generate_article_section_agents.py
 
 ---
 
+## `critique_latex_sections_stub.py`
+
+Compares every `output/results/latex-sections*.json` against coursework summaries (`q1-summary.json`, `q2/*.json`, `q3-cipher-summary.json`) and writes heuristic numeric-token hints for the **latex sections critique** agent:
+
+```bash
+python scripts/critique_latex_sections_stub.py
+```
+
+Output: `output/article_iterations/critique/numeric-consistency.json`. See [`test_cases/latex_sections_critique/README.md`](../test_cases/latex_sections_critique/README.md).
+
+---
+
 ## `toy_aes128_trace.py`
 
 Imported by `run_coursework_outputs.py` for the educational AES tracer (not production-safe crypto).

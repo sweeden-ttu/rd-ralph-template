@@ -81,5 +81,6 @@ Heavy survey / data-analysis wording → **rd-agent**; implementation / CLI tool
 |-------|---------|
 | `test_cases/rd_agent/q{1,2,3}/agents/*.yaml` | Homework-oriented agent task specs |
 | `test_cases/article_sections/` | Per-`src/sec/*.tex` iteration agents |
+| `test_cases/latex_sections_critique/` | Critique `output/results/latex-sections*.json` vs coursework JSON (grades, claims, consistency) |
 | `output/results.json` | Demo JSON for `examples/rust/analyze_stats` |
 | `output/rust_output.json` | Example Rust CLI output (see `examples/README.md`) |
